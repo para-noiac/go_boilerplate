@@ -1,0 +1,2 @@
+# go_boilerplate/app
+app\app.go:20:39: app.GetProducts undefined (type *App has no field or method GetProducts)

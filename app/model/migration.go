@@ -1,14 +1,19 @@
 package model
 
 import (
-	"boilerplate/config"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-func DBMigrate() *gorm.DB {
-	db := config.InitDB()
+// type Model struct {
+// 	DB *gorm.DB
+// }
+
+// func (model *Model) Modelling() {
+// 	model.DB = DBMigrate()
+// }
+
+func DBMigrate(db *gorm.DB) *gorm.DB {
 	/*
 		----------------------------------------
 		| Auto migration to ease table changes |

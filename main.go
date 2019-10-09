@@ -1,12 +1,15 @@
 package main
 
 import (
-	"boilerplate/app"
+	"go_boilerplate/app"
+	"go_boilerplate/app/model"
+	"go_boilerplate/config"
 )
 
 func main() {
 	app := &app.App{}
-	app.Initialize()
+	model.DBMigrate(config.InitDB())
+	app.Routing()
 	app.Run(":3333")
 }
 
