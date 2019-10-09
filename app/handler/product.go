@@ -8,7 +8,12 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func CreateProduct(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+type Product struct {
+	DB *gorm.DB
+}
+
+func (p *Product) CreateProduct(w http.ResponseWriter, r *http.Request) {
+	p.DB = model.DBMigrate()
 	product := model.Product{}
 
 	decoder := json.NewDecoder(r.Body)
@@ -18,7 +23,7 @@ func CreateProduct(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	if err := db.Save(&product).Error; err != nil {
+	if err := p.DB.Save(&product).Error; err != nil {
 		respondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}

@@ -3,8 +3,6 @@ package app
 import (
 	"boilerplate/app/handler"
 	"boilerplate/app/model"
-	"boilerplate/config"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -18,42 +16,30 @@ type App struct {
 	DB     *gorm.DB
 }
 
-func (app *App) Initialize(config *config.Config) {
-	dbURI := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		config.DB.Host,
-		config.DB.Port,
-		config.DB.User,
-		config.DB.Password,
-		config.DB.Dbname,
-	)
-
-	db, err := gorm.Open(config.DB.Dialect, dbURI)
-	if err != nil {
-		panic(err)
-	}
-
-	app.DB = model.DBMigrate(db)
+func (app *App) Initialize() {
+	app.DB = model.DBMigrate()
 	app.Router = mux.NewRouter()
-	app.setRouters()
+	// app.setRouters()
+	app.Router.HandleFunc("/product", handler.CreateProduct).Methods("GET")
+
 }
 
-func (app *App) setRouters() {
-	app.Post("/product", app.CreateProduct)
-	app.Router.HandleFunc("/product", app.GetProducts).Methods("GET")
-}
+// 	r.HandleFunc("/books/{title}/page/{page}", func(w http.ResponseWriter, r *http.Request) {
+// 		vars := mux.Vars(r)
+// 		title := vars["title"]
+// 		page := vars["page"]
 
-func (app *App) Post(path string, f func(w http.ResponseWriter, r *http.Request)) {
-	app.Router.HandleFunc(path, f).Methods("POST")
-}
+// 		fmt.Fprintf(w, "You've requested the book: %s on page %s\n", title, page)
+// 	})
 
-func (app *App) CreateProduct(w http.ResponseWriter, r *http.Request) {
-	handler.CreateProduct(app.DB, w, r)
-}
+// func (app *App) CreateProduct(w http.ResponseWriter, r *http.Request) {
+// 	handler.CreateProduct(app.DB, w, r)
+// }
+
+// func (app *App) GetProducts(w http.ResponseWriter, r *http.Request) {
+// 	handler.GetProducts(app.DB, w, r)
+// }
 
 func (app *App) Run(host string) {
 	log.Fatal(http.ListenAndServe(host, app.Router))
-}
-
-func (app *App) GetProducts(w http.ResponseWriter, r *http.Request) {
-	handler.GetProducts(app.DB, w, r)
 }

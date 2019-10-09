@@ -6,4 +6,5 @@ type User struct {
 	gorm.Model
 	Name   string `json:"name"`
 	Mobile string `json:"mobile"`
+	NRIC   string `json:"nric"`
 }
