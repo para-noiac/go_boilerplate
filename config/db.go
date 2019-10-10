@@ -16,14 +16,14 @@ func InitDB() *gorm.DB {
 	}
 
 	dbURI := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		os.Getenv("Host"),
-		os.Getenv("Port"),
-		os.Getenv("User"),
-		os.Getenv("Password"),
-		os.Getenv("DBname"),
+		os.Getenv("DB_Host"),
+		os.Getenv("DB_Port"),
+		os.Getenv("DB_User"),
+		os.Getenv("DB_Password"),
+		os.Getenv("DB_Name"),
 	)
 
-	db, err := gorm.Open(os.Getenv("Dialect"), dbURI)
+	db, err := gorm.Open(os.Getenv("DB_Dialect"), dbURI)
 	if err != nil {
 		panic(err)
 	}

@@ -2,15 +2,13 @@ package main
 
 import (
 	"go_boilerplate/app"
-	"go_boilerplate/app/model"
-	"go_boilerplate/config"
+
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 func main() {
 	app := &app.App{}
-	model.DBMigrate(config.InitDB())
-	app.Routing()
-	app.Run(":3333")
+	app.Start()
 }
 
 // 	r.HandleFunc("/books/{title}/page/{page}", func(w http.ResponseWriter, r *http.Request) {

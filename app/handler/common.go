@@ -4,7 +4,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/jinzhu/gorm"
 )
+
+type Handler struct {
+	DB *gorm.DB
+}
 
 // respondJSON makes the response with payload as json format
 func respondJSON(w http.ResponseWriter, status int, payload interface{}) {
